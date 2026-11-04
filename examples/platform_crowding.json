@@ -1,0 +1,33 @@
+{
+  "id": "platform_crowding",
+  "title": "站台拥挤疏导（示例）/ Platform crowding (sample)",
+  "description": "开车前 5 分钟，站台某车门处旅客拥挤，有老人被挤得站立不稳。",
+  "entry": "n0",
+  "nodes": {
+    "n0": {
+      "kind": "choice",
+      "prompt": "你首先应该做什么？",
+      "options": [
+        {"id": "a", "text": "上前分隔人流，优先扶稳老人，引导旅客排队", "quality": "correct", "next": "n1",
+         "feedback": "先保障人身安全，再恢复秩序。"},
+        {"id": "b", "text": "先去广播室播报注意事项", "quality": "suboptimal", "next": "n1",
+         "feedback": "广播有用，但现场风险应优先处理。"},
+        {"id": "c", "text": "催促旅客快点上车", "quality": "wrong", "next": "end_bad",
+         "feedback": "加剧拥挤，可能造成踩踏。"}
+      ]
+    },
+    "n1": {
+      "kind": "choice",
+      "prompt": "秩序基本恢复，下一步？",
+      "key_points": {"prompt": "用一两句话向旅客说明安排。",
+                     "keywords": ["排队", ["不要拥挤", "别挤"], "注意安全", "其他车门"], "min_hits": 2,
+                     "sample": "请大家排队上车，不要拥挤，注意安全，也可以从其他车门上车。"},
+      "options": [
+        {"id": "a", "text": "引导部分旅客到相邻车门，并报告值班员", "quality": "correct", "next": "end_good"},
+        {"id": "b", "text": "不再关注，回到岗位", "quality": "wrong", "next": "end_bad"}
+      ]
+    },
+    "end_good": {"kind": "end", "verdict": "good", "summary": "处置得当：先安全、后秩序、再报告。"},
+    "end_bad": {"kind": "end", "verdict": "fail", "summary": "请复习现场安全优先原则。"}
+  }
+}
